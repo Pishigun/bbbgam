@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<head>
+    <title>bbbgam</title>
+    <style>
+
+        #player {
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            position: absolute;
+        }
+        #block{
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            position: fixed;
+            left: 300px;
+            top: 300px;
+        }
+        #staminabar {
+            width: 100px;
+            height: 20px;
+            background-color: blue;
+            border: 1px solid black;
+            position: fixed;
+            left: 10px;
+            top: 10px;
+        }
+        #staminaholder {
+            width: 100px;
+            height: 20px;
+            background-color: white;
+            border: 1px solid black;
+            position: fixed;
+            left: 10px;
+            top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="player"></div>
+    <div id="int"></div>
+    <div id="staminaholder"></div>
+    <div id="staminabar"></div>
+
+    <script>
+        const player = document.getElementById('player');
+
+        const block = document.getElementById('block');
+
+        const staminabar = document.getElementById('staminabar');
+
+        const staminaholder = document.getElementById('staminaholder');
+
+        const keys = {};
+
+        let epress = false;
+
+        window.addEventListener('keydown', (e) => {
+            keys[e.key] = true
+            if (e.key === "e") {
+                epress = true;
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+            if (e.key === "e") {
+                epress = false;
+            }
+            });
+
+        let x = 0;
+        let y = 0;
+        let tp = 200;
+        let tpcd = 0;
+        let stamina = 100;
+        let direction = null;
+        let speed = 4;
+
+        const staminagain = setInterval(() => {
+            if (stamina < 100) {
+                stamina += 4;
+            }
+        }, 1000);
+
+         const tpcdloop = setInterval(() => {
+
+            if (tpcd > 0) {
+                setTimeout (() => {
+                    tpcd = 0;
+                }, 200);
+            }
+        } , 250);
+
+        function gameLoop() {
+            if (keys["w"]){
+                y -= speed;
+                direction = "up";
+            }
+            if (keys["s"]){
+                y += speed;
+                direction = "down";
+            }
+            if (keys["a"]){
+                x -= speed;
+                direction = "left";
+            }
+            if (keys["d"]){
+                x += speed;
+                direction = "right";
+            }
+            if (keys["e"]) {
+                if (tpcd == 0) 
+                if (stamina >= 10) {
+
+                if (direction === "up") {
+                    y -= tp;
+                    tpcd = 0.1;
+                    stamina -= 10;
+                } else if (direction === "down") {
+                    y += tp;
+                    tpcd = 0.1;
+                    stamina -= 10;
+                } else if (direction === "left") {
+                    x -= tp;
+                    tpcd = 0.1;
+                    stamina -= 10;
+                } else if (direction === "right") {
+                    x += tp;
+                    tpcd = 0.1;
+                    stamina -= 10;
+                }
+            }}
+
+            x = Math.max(0, Math.min(x, window.innerWidth - 20));
+            y = Math.max(0, Math.min(y, window.innerHeight - 20));
+            
+            player.style.left = x + 'px';
+            player.style.top = y + 'px';
+            staminabar.style.width = stamina + 'px';
+            requestAnimationFrame(gameLoop);
+        }
+        function startGame() {
+            gameLoop();
+            requestAnimationFrame(gameLoop);
+        }
+
+        startGame();
+        
+    </script>
+     
+</body>
+</html>
