@@ -69,18 +69,20 @@
         let epress = false;
 
         window.addEventListener('keydown', (e) => {
-            keys[e.key] = true
-            if (e.key === "e") {
-                epress = true;
+            keys[e.key] = true;
+
+            if (e.key === "e" && !e.repeat) {
+        epress = true;
             }
         });
 
         window.addEventListener('keyup', (e) => {
             keys[e.key] = false;
+
             if (e.key === "e") {
                 epress = false;
             }
-            });
+        });
 
         let x = 0;
         let y = 0;
@@ -124,25 +126,25 @@
                 x += speed;
                 direction = "right";
             }
-            if (keys["e"]) {
-                if (epress) {
-                    if (tpcd === 0 && stamina >= 10 && direction !== null) {
 
-                    if (direction === "up") y -= tp;
-                    else if (direction === "down") y += tp;
-                    else if (direction === "left") x -= tp;
-                    else if (direction === "right") x += tp;
+            if (epress) {
+            if (tpcd === 0 && stamina >= 10 && direction !== null) {
 
-                    stamina -= 10;
-                    tpcd = 1;
+                if (direction === "up") y -= tp;
+                else if (direction === "down") y += tp;
+                else if (direction === "left") x -= tp;
+                else if (direction === "right") x += tp;
 
-                    setTimeout(() => {
+                stamina -= 10;
+                tpcd = 1;
+
+                setTimeout(() => {
                     tpcd = 0;
-                    }, 200);
-                    }
+                }, 200);
+            }
 
-                    epress = false;
-                    }}
+            epress = false;
+        }
 
             x = Math.max(0, Math.min(x, window.innerWidth - 20));
             y = Math.max(0, Math.min(y, window.innerHeight - 20));
